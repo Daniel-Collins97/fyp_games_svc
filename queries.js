@@ -29,7 +29,7 @@ const getUsersGames = (request, response) => {
 const getGamesById = (request, response) => {
   const game_id = parseInt(request.params.game_id);
 
-  pool.query('SELECT * FROM "Games" WHERE "game_id" = $1', [game_id], (error, results) => {
+  pool.query('SELECT * FROM "Games" WHERE "id" = $1', [game_id], (error, results) => {
     if (error) {
       throw error;
     }
@@ -38,13 +38,13 @@ const getGamesById = (request, response) => {
 }
 
 const createGame = (request, response) => {
-  const { game_id, date, location, opposition, conditions, user_id } = request.body;
+  const { date, location, opposition, conditions, user_id } = request.body;
 
-  pool.query('INSERT INTO "Games" ("id", "date", "location", "opposition", "conditions", "user_id") VALUES ($1, $2, $3, $4, $5, $6)', [game_id, date, location, opposition, conditions, user_id], (error) => {
+  pool.query('INSERT INTO "Games" ("date", "location", "opposition", "conditions", "user_id") VALUES ($1, $2, $3, $4, $5)', [date, location, opposition, conditions, user_id], (error) => {
     if (error) {
       throw error;
     }
-    response.status(201).send(`Game Added with ID: ${game_id}`)
+    response.status(201).send(`Game Added`)
   })
 }
 
@@ -61,13 +61,13 @@ const updateGame = (request, response) => {
 }
 
 const deleteGame = (request, response) => {
-  const game_id = parseInt(request.params.game_id);
+  const id = parseInt(request.params.game_id);
 
-  pool.query('DELETE FROM "Games" WHERE "game_id" = $1', [game_id], (error) => {
+  pool.query('DELETE FROM "Games" WHERE "id" = $1', [id], (error) => {
     if (error) {
       throw error;
     }
-    response.status(200).send(`Game deleted with game_id: ${game_id}`)
+    response.status(200).send(`Game deleted`)
   })
 }
 
