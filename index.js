@@ -21,6 +21,7 @@ app.listen(port, () => {
 
 app.get('/games', db.getGames);
 app.get('/games/:game_id', db.getGamesById);
+app.get('/games/userGames/:user_id', db.getUsersGames);
 
 app.post('/games', db.createGame);
 

@@ -1,10 +1,9 @@
 const Pool = require('pg').Pool;
 const pool = new Pool({
-  user: 'daniel',
-  host: 'localhost',
+  user: 'postgres',
+  host: '35.228.14.148',
   database: 'finalyearprojectdb',
   password: 'Daniel_joseph1',
-  port: 5432,
 })
 
 const getGames = (request, response) => {
@@ -13,6 +12,17 @@ const getGames = (request, response) => {
       throw error;
     }
     response.status(200).json(results.rows);
+  })
+}
+
+const getUsersGames = (request, response) => {
+  const user_id = parseInt(request.params.user_id)
+
+  pool.query('SELECT * FROM "Games" WHERE "user_id" = $1', [user_id], (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(results.rows)
   })
 }
 
@@ -30,7 +40,7 @@ const getGamesById = (request, response) => {
 const createGame = (request, response) => {
   const { game_id, date, location, opposition, conditions } = request.body;
 
-  pool.query('INSERT INTO "Games" ("game_id", "date", "location", "opposition", "conditions") VALUES ($1, $2, $3, $4, $5)', [game_id, date, location, opposition, conditions], (error, results) => {
+  pool.query('INSERT INTO "Games" ("game_id", "date", "location", "opposition", "conditions") VALUES ($1, $2, $3, $4, $5)', [game_id, date, location, opposition, conditions], (error) => {
     if (error) {
       throw error;
     }
@@ -63,6 +73,7 @@ const deleteGame = (request, response) => {
 
 module.exports = {
   getGames,
+  getUsersGames,
   getGamesById,
   createGame,
   updateGame,
