@@ -38,9 +38,9 @@ const getGamesById = (request, response) => {
 }
 
 const createGame = (request, response) => {
-  const { game_id, date, location, opposition, conditions } = request.body;
+  const { game_id, date, location, opposition, conditions, user_id } = request.body;
 
-  pool.query('INSERT INTO "Games" ("game_id", "date", "location", "opposition", "conditions") VALUES ($1, $2, $3, $4, $5)', [game_id, date, location, opposition, conditions], (error) => {
+  pool.query('INSERT INTO "Games" ("id", "date", "location", "opposition", "conditions", "user_id") VALUES ($1, $2, $3, $4, $5, $6)', [game_id, date, location, opposition, conditions, user_id], (error) => {
     if (error) {
       throw error;
     }
