@@ -9,9 +9,10 @@ const pool = new Pool({
 const getGames = (request, response) => {
   pool.query('SELECT * FROM "Games"', (error, results) => {
     if (error) {
-      throw error;
+      response.status(500).json(error)
+    } else {
+      response.status(200).json(results.rows);
     }
-    response.status(200).json(results.rows);
   })
 }
 
@@ -20,9 +21,10 @@ const getUsersGames = (request, response) => {
 
   pool.query('SELECT * FROM "Games" WHERE "user_id" = $1', [user_id], (error, results) => {
     if (error) {
-      throw error;
+      response.status(500).json(error)
+    } else {
+      response.status(200).json(results.rows)
     }
-    response.status(200).json(results.rows)
   })
 }
 
@@ -31,9 +33,10 @@ const getGamesById = (request, response) => {
 
   pool.query('SELECT * FROM "Games" WHERE "id" = $1', [game_id], (error, results) => {
     if (error) {
-      throw error;
+      response.status(500).json(error)
+    } else {
+      response.status(200).json(results.rows)
     }
-    response.status(200).json(results.rows)
   })
 }
 
@@ -42,9 +45,10 @@ const createGame = (request, response) => {
 
   pool.query('INSERT INTO "Games" ("date", "location", "opposition", "conditions", "user_id") VALUES ($1, $2, $3, $4, $5)', [date, location, opposition, conditions, user_id], (error) => {
     if (error) {
-      throw error;
+      response.status(500).json(error)
+    } else {
+      response.status(201).send(`Game Added`)
     }
-    response.status(201).send(`Game Added`)
   })
 }
 
@@ -54,9 +58,10 @@ const updateGame = (request, response) => {
 
   pool.query('UPDATE "Games" SET "location" = $1 WHERE "game_id" = $2', [location, game_id], (error) => {
     if (error) {
-      throw error;
+      response.status(500).json(error)
+    } else {
+      response.status(200).send(`Game modified with game_id: ${game_id}`);
     }
-    response.status(200).send(`Game modified with game_id: ${game_id}`);
   })
 }
 
@@ -65,9 +70,10 @@ const deleteGame = (request, response) => {
 
   pool.query('DELETE FROM "Games" WHERE "id" = $1', [id], (error) => {
     if (error) {
-      throw error;
+      response.status(500).json(error)
+    } else {
+      response.status(200).send(`Game deleted`)
     }
-    response.status(200).send(`Game deleted`)
   })
 }
 
